@@ -224,13 +224,19 @@ def play_hand(hand):
         word_score = get_word_score(word, calculate_hand_len(hand))
         total_score += word_score
         
+        # Print word score and total score
+        print(f'"{word}" earned {word_score} points. Total: {total_score} points\n')
+        
         # Update hand
         hand = update_hand(hand, word)
         
-        # Print word score and total score
-        print(f'"{word}" earned {word_score} points. Total: {total_score} points\n')
-    
     print("Total score:", total_score, "points.")
+        
+        
+        
+        
+        
+        
 
 
 #
