@@ -205,11 +205,11 @@ def play_hand(hand):
     # Game loop
     while True:
         # Display current hand
-        print("Current hand:", end=" ")
+        print("Current Hand:", end=" ")
         display_hand(hand)
         
         # Ask user for input
-        word = input("Enter word, or '.' to indicate that you are finished: ").lower()
+        word = input('Enter word, or a "." to indicate that you are finished: ').lower()
         
         # Check if user wants to end the game
         if word == ".":
@@ -230,7 +230,7 @@ def play_hand(hand):
         # Print word score and total score
         print(f'"{word}" earned {word_score} points. Total: {total_score} points\n')
     
-    print("Total score for this hand:", total_score)
+    print("Total score:", total_score)
 
 
 #
