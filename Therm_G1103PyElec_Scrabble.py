@@ -131,7 +131,6 @@ def deal_hand(n):
 # Problem #2: Update a hand by removing letters
 #
 
-
 def update_hand(hand, word):
     """
     Assumes that 'hand' has all the letters in word.
