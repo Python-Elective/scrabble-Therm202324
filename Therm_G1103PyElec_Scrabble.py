@@ -36,8 +36,8 @@ def is_valid_word(word, hand, word_list):
     word = word.lower()
     if word not in word_list:
         return False
-    words_freq = get_frequency_dict(word)
-    for letter, freq in words_freq.items():
+    word_freq = get_frequency_dict(word)
+    for letter, freq in word_freq.items():
         if hand.get(letter, 0) < freq:
             return False
     return True
