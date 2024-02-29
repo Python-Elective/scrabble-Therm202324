@@ -17,7 +17,7 @@ def get_word_score(words):
     }
 
     words = words.lower()
-    score = sum(SCRABBLE_LETTER_VALUES.get(letter, 0) for letter in word)
+    score = sum(SCRABBLE_LETTER_VALUES.get(letter, 0) for letter in words)
     return score * len(words) if words else 0
 
 def update_hand(hand, words):
@@ -29,7 +29,7 @@ def update_hand(hand, words):
         updated_hand[letter] = updated_hand.get(letter, 0) - 1
     return {k: v for k, v in updated_hand.items() if v > 0}
 
-def is_valid_word(words, hand, word_list):
+def is_valid_word(words, hand, words_list):
     """
     Checks if a word is valid according to the game rules.
     """
@@ -55,7 +55,7 @@ def play_hand(hand, words_list, n):
     total_score = 0
     while True:
         print("Current Hand:", display_hand(hand))
-        word = input("Enter word, or a '.' to indicate that you are finished: ")
+        words = input("Enter word, or a '.' to indicate that you are finished: ")
         if words == '.':
             break
         if not is_valid_word(words, hand, words_list):
@@ -64,7 +64,7 @@ def play_hand(hand, words_list, n):
         score = get_word_score(words)
         total_score += score
         print(f'"{word}" earned {score} points. Total: {total_score} points')
-        hand = update_hand(hand, word)
+        hand = update_hand(hand, words)
         if calculate_hand_len(hand) == 0:
             print("Run out of letters. Total score:", total_score, "points.")
             break
