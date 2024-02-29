@@ -6,7 +6,7 @@
 # (end of helper code)
 # -----------------------------------
 
-def get_word_score(words):
+def get_word_score(word):
     """
     Calculates the score for a single word according to the provided scoring rules.
     """
@@ -16,27 +16,27 @@ def get_word_score(words):
         'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
     }
 
-    words = words.lower()
-    score = sum(SCRABBLE_LETTER_VALUES.get(letter, 0) for letter in words)
-    return score * len(words) if words else 0
+    word = word.lower()
+    score = sum(SCRABBLE_LETTER_VALUES.get(letter, 0) for letter in word)
+    return score * len(word) if word else 0
 
-def update_hand(hand, words):
+def update_hand(hand, word):
     """
     Updates the hand after a word is played.
     """
     updated_hand = hand.copy()
-    for letter in words:
+    for letter in word:
         updated_hand[letter] = updated_hand.get(letter, 0) - 1
     return {k: v for k, v in updated_hand.items() if v > 0}
 
-def is_valid_word(words, hand, words_list):
+def is_valid_word(word, hand, word_list):
     """
     Checks if a word is valid according to the game rules.
     """
-    words = words.lower()
-    if words not in words_list:
+    word = word.lower()
+    if word not in word_list:
         return False
-    words_freq = get_frequency_dict(words)
+    words_freq = get_frequency_dict(word)
     for letter, freq in words_freq.items():
         if hand.get(letter, 0) < freq:
             return False
@@ -48,29 +48,29 @@ def calculate_hand_len(hand):
     """
     return sum(hand.values())
 
-def play_hand(hand, words_list, n):
+def play_hand(hand, word_list, n):
     """
     Allows the user to play a single hand.
     """
     total_score = 0
     while True:
         print("Current Hand:", display_hand(hand))
-        words = input("Enter word, or a '.' to indicate that you are finished: ")
-        if words == '.':
+        word = input("Enter word, or a '.' to indicate that you are finished: ")
+        if word == '.':
             break
-        if not is_valid_word(words, hand, words_list):
+        if not is_valid_word(word, hand, word_list):
             print("Invalid word, please try again.")
             continue
-        score = get_word_score(words)
+        score = get_word_score(word)
         total_score += score
         print(f'"{word}" earned {score} points. Total: {total_score} points')
-        hand = update_hand(hand, words)
+        hand = update_hand(hand, word)
         if calculate_hand_len(hand) == 0:
             print("Run out of letters. Total score:", total_score, "points.")
             break
     return total_score
 
-def play_game(words_list):
+def play_game(word_list):
     """
     Allows the user to play multiple hands.
     """
@@ -81,10 +81,10 @@ def play_game(words_list):
             break
         elif user_input == 'n':
             hand = deal_hand(HAND_SIZE)
-            play_hand(hand, words_list, HAND_SIZE)
+            play_hand(hand, word_list, HAND_SIZE)
         elif user_input == 'r':
             if hand:
-                play_hand(hand, words_list, HAND_SIZE)
+                play_hand(hand, word_list, HAND_SIZE)
             else:
                 print("You have not played a hand yet. Please play a new hand first!")
         else:
