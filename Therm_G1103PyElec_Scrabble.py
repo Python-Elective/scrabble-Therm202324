@@ -209,10 +209,10 @@ def play_hand(hand):
         display_hand(hand)
         
         # Ask user for input
-        word = input("Enter word, or '!!' to indicate that you are finished: ").lower()
+        word = input("Enter word, or '.' to indicate that you are finished: ").lower()
         
         # Check if user wants to end the game
-        if word == "!!":
+        if word == ".":
             break
         
         # Check if word is valid
