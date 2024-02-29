@@ -230,7 +230,7 @@ def play_hand(hand):
         # Print word score and total score
         print(f'"{word}" earned {word_score} points. Total: {total_score} points\n')
     
-    print("Total score:", total_score)
+    print("Total score:", total_score, "points.")
 
 
 #
