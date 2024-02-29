@@ -194,30 +194,22 @@ def calculate_hand_len(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
+    assert isinstance(hand, dict), "Hand must be a dictionary"
+    assert all(isinstance(value, int) for value in hand.values()), "Values in hand dictionary must be integers"
+    
     return sum(hand.values())
+def play_hand(hand):
+    """
+    Allows the user to play out a single hand.
 
-total_score = 0 
-
-while calculate_hand_len(hand) > 0:  
-    print("Current Hand:", end=" ")
-    display_hand(hand)  
-
-    word = input('Enter word, or a "." to indicate that you are finished: ').lower()  
-    if word == '.':  
-        break  
-
-    if not is_valid_word(word, hand, word_list):  
-        print("Invalid word, please try again.\n")  
-        continue
-
-    word_score = get_word_score(word, n)  
-    total_score += word_score  
-    print('"' + word + '" earned', word_score, 'points. Total:', total_score, 'points\n')  
-
-    hand = update_hand(hand, word)  
-
-print("Total score:", total_score)
- 
+    hand: dictionary (string-> int)
+    """
+    try:
+        hand_length = calculate_hand_len(hand)
+        # Additional code to play the hand
+    except AssertionError as e:
+        print("Error:", e)
+        # Additional error handling or return statement
 
 
 #
@@ -236,26 +228,24 @@ def play_game(word_list):
 
     2) When done playing the hand, repeat from step 1    
     """
-    hand = None  # Initialize hand to None initially
-while True:
-    user_input = input("Enter 'n' to play a new hand, 'r' to replay the last hand, or 'e' to exit: ").lower()
-    
-    if user_input == 'n':
-        hand = deal_hand(HAND_SIZE)  # Assuming you have a function to deal a hand called deal_hand
-        play_hand(hand.copy(), word_list)  # Assuming you have a function to play a hand called play_hand
+    last_hand = None
+
+    while True:
+        user_input = input("Enter 'n' to play a new hand, 'r' to replay the last hand, or 'e' to exit: ").lower()
         
-    elif user_input == 'r':
-        if hand:
-            play_hand(hand.copy(), word_list)
+        if user_input == 'n':
+            last_hand = deal_hand(HAND_SIZE)  # Assuming deal_hand function is defined elsewhere
+            play_hand(last_hand.copy(), word_list)  # Assuming play_hand function is defined elsewhere
+        elif user_input == 'r':
+            if last_hand:
+                play_hand(last_hand.copy(), word_list)  # Assuming play_hand function is defined elsewhere
+            else:
+                print("You haven't played a hand yet.")
+        elif user_input == 'e':
+            print("Goodbye!")
+            break
         else:
-            print("You haven't played any hand yet.")
-    
-    elif user_input == 'e':
-        print("Exiting the game.")
-        break
-    
-    else:
-        print("play_game not yet implemented.")
+            print("Invalid input. Please enter 'n', 'r', or 'e'.")
 
 
 
