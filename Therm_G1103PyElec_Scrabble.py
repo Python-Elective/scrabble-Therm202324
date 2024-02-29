@@ -148,8 +148,12 @@ def update_hand(hand, word):
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
     """
-    # TO DO ... <-- Remove this comment when you code this function
-
+    updated_hand = hand.copy()  
+    for letter in word:
+        updated_hand[letter] -= 1  
+        if updated_hand[letter] == 0:
+            del updated_hand[letter]  
+    return updated_hand
 
 #
 # Problem #3: Test word validity
@@ -165,7 +169,18 @@ def is_valid_word(word, hand, word_list):
     hand: dictionary (string -> int)
     word_list: list of lowercase strings
     """
-    # TO DO ... <-- Remove this comment when you code this function
+    if word not in word_list:
+        return False
+    
+    word_freq = {}  
+    for letter in word:
+        word_freq[letter] = word_freq.get(letter, 0) + 1  
+    
+    for letter, freq in word_freq.items():
+        if letter not in hand or hand[letter] < freq:
+            return False 
+    
+    return True  
 
 
 #
@@ -179,57 +194,29 @@ def calculate_hand_len(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
-    # TO DO... <-- Remove this comment when you code this function
+    return sum(hand.values())
 
-
-def play_hand(hand, word_list, n):
-    """
-    Allows the user to play the given hand, as follows:
-
-    * The hand is displayed.
-    * The user may input a word or a single period (the string ".") 
-      to indicate they're done playing
-    * Invalid words are rejected, and a message is displayed asking
-      the user to choose another word until they enter a valid word or "."
-    * When a valid word is entered, it uses up letters from the hand.
-    * After every valid word: the score for that word is displayed,
-      the remaining letters in the hand are displayed, and the user
-      is asked to input another word.
-    * The sum of the word scores is displayed when the hand finishes.
-    * The hand finishes when there are no more unused letters or the user
-      inputs a "."
-
-      hand: dictionary (string -> int)
-      word_list: list of lowercase strings
-      n: integer (HAND_SIZE; i.e., hand size required for additional points)
-
-    """
-    # BEGIN PSEUDOCODE <-- Remove this comment when you code this function; do your coding within the pseudocode (leaving those comments in-place!)
-    # Keep track of the total score
-
-    # As long as there are still letters left in the hand:
-
-    # Display the hand
-
-    # Ask user for input
-
-    # If the input is a single period:
-
-    # End the game (break out of the loop)
-
-    # Otherwise (the input is not a single period):
-
-    # If the word is not valid:
-
-    # Reject invalid word (print a message followed by a blank line)
-
-    # Otherwise (the word is valid):
-
-    # Tell the user how many points the word earned, and the updated total score, in one line followed by a blank line
-
-    # Update the hand
-
-    # Game is over (user entered a '.' or ran out of letters), so tell user the total score
+total_score = 0 
+    
+while calculate_hand_len(hand) > 0:  
+        print("Current Hand:", end=" ")
+        display_hand(hand)  
+        
+        word = input('Enter word, or a "." to indicate that you are finished: ').lower()  
+        if word == '.':  
+            break  
+        
+        if not is_valid_word(word, hand, word_list):  
+            print("Invalid word, please try again.\n")  
+            continue
+        
+        word_score = get_word_score(word, n)  
+        total_score += word_score  
+        print('"' + word + '" earned', word_score, 'points. Total:', total_score, 'points\n')  
+        
+        hand = update_hand(hand, word)  
+        
+    print("Total score:", total_score)  
 
 
 #
