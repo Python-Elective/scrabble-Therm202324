@@ -92,15 +92,14 @@ def display_hand(hand):
 
     hand: dictionary (string -> int)
     """
-    for letter in hand.keys():
-        for j in range(hand[letter]):
-            print(letter, end=" ")       # print all on the same line
-    print()                             # print an empty line
+    for letter, count in hand.items():
+        for _ in range(count):
+            print(letter, end=" ")  # Print the letter count times
+    print()  # Print a newline at the end
 
 #
 # Problem #2: Make sure you understand how this function works and what it does!
 #
-
 
 def deal_hand(n):
     """
@@ -114,17 +113,18 @@ def deal_hand(n):
     n: int >= 0
     returns: dictionary (string -> int)
     """
-    hand = {}
     num_vowels = n // 3
-
-    for i in range(num_vowels):
-        x = VOWELS[random.randrange(0, len(VOWELS))]
-        hand[x] = hand.get(x, 0) + 1
-
-    for i in range(num_vowels, n):
-        x = CONSONANTS[random.randrange(0, len(CONSONANTS))]
-        hand[x] = hand.get(x, 0) + 1
-
+    
+    # Select vowels and consonants randomly
+    hand = {}
+    for _ in range(num_vowels):
+        vowel = random.choice(VOWELS)
+        hand[vowel] = hand.get(vowel, 0) + 1
+        
+    for _ in range(num_vowels, n):
+        consonant = random.choice(CONSONANTS)
+        hand[consonant] = hand.get(consonant, 0) + 1
+        
     return hand
 
 #
@@ -148,11 +148,9 @@ def update_hand(hand, word):
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
     """
-    updated_hand = hand.copy()  
+    updated_hand = hand.copy()  # Make a copy of the hand to avoid modifying the original
     for letter in word:
-        updated_hand[letter] -= 1  
-        if updated_hand[letter] == 0:
-            del updated_hand[letter]  
+        updated_hand[letter] -= 1  # Decrement the count of each letter in the word
     return updated_hand
 
 #
@@ -172,15 +170,15 @@ def is_valid_word(word, hand, word_list):
     if word not in word_list:
         return False
     
-    word_freq = {}  
+    # Create a copy of the hand to avoid modifying the original hand
+    hand_copy = hand.copy()
     for letter in word:
-        word_freq[letter] = word_freq.get(letter, 0) + 1  
+        if hand_copy.get(letter, 0) == 0:
+            return False  # Letter not in hand or no more occurrences left
+        else:
+            hand_copy[letter] -= 1  # Use up the letter from hand
     
-    for letter, freq in word_freq.items():
-        if letter not in hand or hand[letter] < freq:
-            return False 
-    
-    return True  
+    return True
 
 
 #
@@ -194,22 +192,46 @@ def calculate_hand_len(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
-    assert isinstance(hand, dict), "Hand must be a dictionary"
-    assert all(isinstance(value, int) for value in hand.values()), "Values in hand dictionary must be integers"
-    
     return sum(hand.values())
+    
 def play_hand(hand):
     """
     Allows the user to play out a single hand.
 
     hand: dictionary (string-> int)
     """
-    try:
-        hand_length = calculate_hand_len(hand)
-        # Additional code to play the hand
-    except AssertionError as e:
-        print("Error:", e)
-        # Additional error handling or return statement
+    # Initialize variables
+    total_score = 0
+    
+    # Game loop
+    while True:
+        # Display current hand
+        print("Current hand:", end=" ")
+        display_hand(hand)
+        
+        # Ask user for input
+        word = input("Enter word, or '!!' to indicate that you are finished: ").lower()
+        
+        # Check if user wants to end the game
+        if word == "!!":
+            break
+        
+        # Check if word is valid
+        if not is_valid_word(word, hand, word_list):
+            print("Invalid word. Please try again.")
+            continue
+        
+        # Calculate word score
+        word_score = get_word_score(word, calculate_hand_len(hand))
+        total_score += word_score
+        
+        # Update hand
+        hand = update_hand(hand, word)
+        
+        # Print word score and total score
+        print(f'"{word}" earned {word_score} points. Total: {total_score} points\n')
+    
+    print("Total score for this hand:", total_score)
 
 
 #
@@ -228,26 +250,26 @@ def play_game(word_list):
 
     2) When done playing the hand, repeat from step 1    
     """
-    last_hand = None
-
+    last_hand = None  # Store the last hand played
+    
     while True:
         user_input = input("Enter 'n' to play a new hand, 'r' to replay the last hand, or 'e' to exit: ").lower()
         
         if user_input == 'n':
-            last_hand = deal_hand(HAND_SIZE)  # Assuming deal_hand function is defined elsewhere
-            play_hand(last_hand.copy(), word_list)  # Assuming play_hand function is defined elsewhere
+            hand = deal_hand(HAND_SIZE)
+            play_hand(hand)
+            last_hand = hand
         elif user_input == 'r':
             if last_hand:
-                play_hand(last_hand.copy(), word_list)  # Assuming play_hand function is defined elsewhere
+                play_hand(last_hand)
             else:
-                print("You haven't played a hand yet.")
+                print("You haven't played any hand yet. Please play a new hand first.")
         elif user_input == 'e':
-            print("Goodbye!")
+            print("Exiting the game.")
             break
         else:
             print("Invalid input. Please enter 'n', 'r', or 'e'.")
-
-
+            continue
 
 #
 # Build data structures used for entire session and play game
