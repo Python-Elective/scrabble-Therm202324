@@ -1,4 +1,4 @@
-Therm_G1103PyElec_Scrabble import *
+from Therm_G1103PyElec_Scrabble import *
 
 #
 # Test code
