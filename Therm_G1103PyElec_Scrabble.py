@@ -94,8 +94,8 @@ def display_hand(hand):
     """
     for letter, count in hand.items():
         for _ in range(count):
-            print(letter, end=" ")  # Print the letter count times
-    print()  # Print a newline at the end
+            print(letter, end=" ")
+    print()
 
 #
 # Problem #2: Make sure you understand how this function works and what it does!
@@ -115,7 +115,6 @@ def deal_hand(n):
     """
     num_vowels = n // 3
     
-    # Select vowels and consonants randomly
     hand = {}
     for _ in range(num_vowels):
         vowel = random.choice(VOWELS)
@@ -147,9 +146,9 @@ def update_hand(hand, word):
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
     """
-    updated_hand = hand.copy()  # Make a copy of the hand to avoid modifying the original
+    updated_hand = hand.copy() 
     for letter in word:
-        updated_hand[letter] -= 1  # Decrement the count of each letter in the word
+        updated_hand[letter] -= 1 
     return updated_hand
 
 #
@@ -169,13 +168,12 @@ def is_valid_word(word, hand, word_list):
     if word not in word_list:
         return False
     
-    # Create a copy of the hand to avoid modifying the original hand
     hand_copy = hand.copy()
     for letter in word:
         if hand_copy.get(letter, 0) == 0:
-            return False  # Letter not in hand or no more occurrences left
+            return False  
         else:
-            hand_copy[letter] -= 1  # Use up the letter from hand
+            hand_copy[letter] -= 1  
     
     return True
 
@@ -199,45 +197,29 @@ def play_hand(hand):
 
     hand: dictionary (string-> int)
     """
-    # Initialize variables
     total_score = 0
     
-    # Game loop
     while True:
-        # Display current hand
         print("Current Hand:", end=" ")
         display_hand(hand)
         
-        # Ask user for input
         word = input('Enter word, or a "." to indicate that you are finished: ').lower()
         
-        # Check if user wants to end the game
         if word == ".":
             break
         
-        # Check if word is valid
         if not is_valid_word(word, hand, word_list):
             print("Invalid word. Please try again.")
             continue
         
-        # Calculate word score
         word_score = get_word_score(word, calculate_hand_len(hand))
         total_score += word_score
         
-        # Print word score and total score
         print(f'"{word}" earned {word_score} points. Total: {total_score} points\n')
         
-        # Update hand
         hand = update_hand(hand, word)
         
     print("Total score:", total_score, "points.")
-        
-        
-        
-        
-        
-        
-
 
 #
 # Problem #5: Playing a game
@@ -255,8 +237,7 @@ def play_game(word_list):
 
     2) When done playing the hand, repeat from step 1    
     """
-    last_hand = None  # Store the last hand played
-    
+    last_hand = None  
     while True:
         user_input = input("Enter 'n' to deal a new hand, 'r' to replay the last hand, or 'e' to end game: ").lower()
         
