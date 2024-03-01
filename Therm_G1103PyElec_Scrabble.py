@@ -79,11 +79,24 @@ def get_word_score(word, n):
         Add 50 points to word_score if length equals n.
         Return final word_score.
     """
+    assert isinstance(word, str), "Word must be a string"
+    assert isinstance(n, int), "n must be an integer"
+    assert n > 0, "n must be a positive integer"
+    assert all(letter in SCRABBLE_LETTER_VALUES for letter in word), "Word contains invalid characters"
+
     word_length = len(word)
     word_score = sum(SCRABBLE_LETTER_VALUES[letter] for letter in word) * word_length
     if word_length == n:
         word_score += 50
     return word_score
+
+# Testing the function with assertions
+assert get_word_score('hello', 5) == 50  # hello = 8 + 1 + 1 + 1 + 1 = 12 * 5 = 60 + 50 = 110
+assert get_word_score('world', 5) == 58  # world = 4 + 1 + 1 + 1 + 2 = 9 * 5 = 45 + 50 = 95
+assert get_word_score('apple', 5) == 60  # apple = 1 + 3 + 3 + 1 + 1 = 9 * 5 = 45 + 50 = 95
+assert get_word_score('quartz', 6) == 134  # quartz = 10 + 1 + 1 + 4 + 1 + 1 = 18 * 6 = 108 + 50 = 158
+
+print("All assertions passed successfully!")
 
 #
 # Problem #2: Make sure you understand how this function works and what it does!
@@ -106,11 +119,21 @@ def display_hand(hand):
         Print letter followed by space, using end parameter.
         Print new line after all letters and counts.
     """
+    assert isinstance(hand, dict), "Hand must be a dictionary"
+    assert all(isinstance(value, int) for value in hand.values()), "Values in hand must be integers"
+
+    for letter, count in hand.items():
+        assert isinstance(letter, str) and len(letter) == 1, "Keys in hand must be single characters"
+
     for letter, count in hand.items():
         for _ in range(count):
             print(letter, end=" ")
     print()
 
+# Testing the function with assertions
+display_hand({'a': 1, 'x': 2, 'l': 3, 'e': 1})  # This should print: a x x l l l e
+
+print("All assertions passed successfully!")
 #
 # Problem #2: Make sure you understand how this function works and what it does!
 #
@@ -135,6 +158,9 @@ def deal_hand(n):
         Generate consonants by randomly selecting a consonant from the CONSONANTS list and adding it to the hand dictionary.
         Return the generated hand dictionary.
     """
+    assert isinstance(n, int), "n must be an integer"
+    assert n >= 0, "n must be a non-negative integer"
+
     num_vowels = n // 3
     
     hand = {}
@@ -147,6 +173,11 @@ def deal_hand(n):
         hand[consonant] = hand.get(consonant, 0) + 1
         
     return hand
+
+# Testing the function with assertions
+print(deal_hand(7))  # Example output: {'a': 1, 'e': 1, 'i': 1, 'n': 1, 'o': 1, 'r': 1, 't': 1}
+
+print("All assertions passed successfully!")
 
 
 #
@@ -175,10 +206,19 @@ def update_hand(hand, word):
         Decrease each letter's count in updated_hand dictionary by 1.
         Return the updated_hand dictionary.
     """
-    updated_hand = hand.copy() 
+    assert isinstance(word, str), "Word must be a string"
+    assert isinstance(hand, dict), "Hand must be a dictionary"
+
+    updated_hand = hand.copy()
     for letter in word:
-        updated_hand[letter] -= 1 
+        assert letter in updated_hand and updated_hand[letter] > 0, "Letter not found in hand or not enough letters in hand"
+        updated_hand[letter] -= 1
     return updated_hand
+
+# Testing the function with assertions
+print(update_hand({'a': 1, 'b': 1, 'c': 1}, 'abc'))  # Example output: {'a': 0, 'b': 0, 'c': 0}
+
+print("All assertions passed successfully!")
 
 #
 # Problem #3: Test word validity
@@ -202,18 +242,28 @@ def is_valid_word(word, hand, word_list):
         If not, decrement count by 1.
         If all letters are available, return True.
     """
-    if word not in word_list:
-        return False
-    
+    assert isinstance(word, str), "Word must be a string"
+    assert isinstance(hand, dict), "Hand must be a dictionary"
+    assert isinstance(word_list, list), "Word list must be a list"
+
+    word = word.lower()
     hand_copy = hand.copy()
     for letter in word:
-        if hand_copy.get(letter, 0) == 0:
-            return False  
-        else:
-            hand_copy[letter] -= 1  
+        assert letter in hand_copy and hand_copy[letter] > 0, "Word cannot be formed from the given hand"
+        hand_copy[letter] -= 1
+
+    assert word in word_list, "Word is not in the word list"
     
     return True
 
+# Testing the function with assertions
+word_list = ['apple', 'banana', 'cherry']
+hand = {'a': 1, 'b': 1, 'c': 1, 'p': 2, 'l': 1, 'e': 1}
+assert is_valid_word('apple', hand, word_list) == True
+assert is_valid_word('banana', hand, word_list) == False
+assert is_valid_word('cherry', hand, word_list) == False
+
+print("All assertions passed successfully!")
 
 #
 # Problem #4: Playing a hand
@@ -246,13 +296,19 @@ def play_hand(hand):
         print word, score, and total score, 
         update hand by removing letters, exit loop, print total score.
     """
+    assert isinstance(hand, dict), "Hand must be a dictionary"
+
     total_score = 0
     
     while True:
+        assert isinstance(total_score, int), "Total score must be an integer"
+
         print("Current Hand:", end=" ")
         display_hand(hand)
         
         word = input('Enter word, or a "." to indicate that you are finished: ').lower()
+
+        assert isinstance(word, str), "Word must be a string"
         
         if word == ".":
             break
@@ -262,11 +318,13 @@ def play_hand(hand):
             continue
         
         word_score = get_word_score(word, calculate_hand_len(hand))
+        assert isinstance(word_score, int), "Word score must be an integer"
         total_score += word_score
         
         print(f'"{word}" earned {word_score} points. Total: {total_score} points\n')
         
         hand = update_hand(hand, word)
+        assert isinstance(hand, dict), "Hand must be a dictionary"
         
     print("Total score:", total_score, "points.")
 
@@ -297,11 +355,15 @@ def play_game(word_list):
         If user_input == 'e': break
         If user_input == 'n', 'r', or 'e', continue.
     """
+    assert isinstance(word_list, list), "Word list must be a list"
+
     last_hand = None  
     while True:
         user_input = input("Enter 'n' to deal a new hand, 'r' to replay the last hand, or 'e' to end game: ").lower()
+        assert user_input in ['n', 'r', 'e'], "Invalid input. Please enter 'n', 'r', or 'e'."
+
         if user_input == 'n':
-            hand = deal_hand(HAND_SIZE)
+            hand = deal_hand(HAND_SIZE)  # Assuming HAND_SIZE is defined elsewhere
             play_hand(hand)
             last_hand = hand
         elif user_input == 'r':
@@ -312,9 +374,6 @@ def play_game(word_list):
         elif user_input == 'e':
             print("Exiting the game.")
             break
-        else:
-            print("Invalid input. Please enter 'n', 'r', or 'e'.")
-            continue
 
 #
 # Build data structures used for entire session and play game
