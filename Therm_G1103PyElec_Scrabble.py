@@ -71,6 +71,14 @@ def get_word_score(word, n):
     n: integer (HAND_SIZE; i.e., hand size required for additional points)
     returns: int >= 0
     """
+    """
+    Word Length and Score Calculation
+        Calculate word length in word_length.
+        Calculate word score by summing SCRABBLE_LETTER_VALUES values.
+        Store score in word_score.
+        Add 50 points to word_score if length equals n.
+        Return final word_score.
+    """
     word_length = len(word)
     word_score = sum(SCRABBLE_LETTER_VALUES[letter] for letter in word) * word_length
     if word_length == n:
@@ -91,6 +99,12 @@ def display_hand(hand):
     The order of the letters is unimportant.
 
     hand: dictionary (string -> int)
+    """
+    """Hand Dictionary Process
+        Print each letter and count in the dictionary.
+        Repeat process for specified count times.
+        Print letter followed by space, using end parameter.
+        Print new line after all letters and counts.
     """
     for letter, count in hand.items():
         for _ in range(count):
@@ -113,6 +127,14 @@ def deal_hand(n):
     n: int >= 0
     returns: dictionary (string -> int)
     """
+    """
+    Vowel Generation Process
+        Calculate num_vowels by dividing n by 3 and store it in a variable.
+        Initialize an empty dictionary, hand.
+        Generate vowels by randomly selecting a vowel from the VOWELS list and adding it to the hand dictionary.
+        Generate consonants by randomly selecting a consonant from the CONSONANTS list and adding it to the hand dictionary.
+        Return the generated hand dictionary.
+    """
     num_vowels = n // 3
     
     hand = {}
@@ -125,6 +147,7 @@ def deal_hand(n):
         hand[consonant] = hand.get(consonant, 0) + 1
         
     return hand
+
 
 #
 # Problem #2: Update a hand by removing letters
@@ -146,6 +169,12 @@ def update_hand(hand, word):
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
     """
+    """
+    Hand Dictionary Creation and Maintenance
+        Create a new dictionary, updated_hand.
+        Decrease each letter's count in updated_hand dictionary by 1.
+        Return the updated_hand dictionary.
+    """
     updated_hand = hand.copy() 
     for letter in word:
         updated_hand[letter] -= 1 
@@ -164,6 +193,14 @@ def is_valid_word(word, hand, word_list):
     word: string
     hand: dictionary (string -> int)
     word_list: list of lowercase strings
+    """
+    """
+    Word Analysis Procedure
+        Check if word is not present in word_list.
+        Create a copy of hand dictionary and store in hand_copy.
+        Check if letter count in hand_copy is 0.
+        If not, decrement count by 1.
+        If all letters are available, return True.
     """
     if word not in word_list:
         return False
@@ -196,6 +233,18 @@ def play_hand(hand):
     Allows the user to play out a single hand.
 
     hand: dictionary (string-> int)
+    """
+    """
+    Infinite Loop Implementation
+        Initialize variable total_score to 0.
+        Run infinite loop: print current hand, 
+        prompt user for input, 
+        break if input is a period, 
+        print message if input is invalid, 
+        calculate word score, 
+        add word score to total score, 
+        print word, score, and total score, 
+        update hand by removing letters, exit loop, print total score.
     """
     total_score = 0
     
@@ -236,6 +285,17 @@ def play_game(word_list):
       * If the user inputs anything else, tell them their input was invalid.
 
     2) When done playing the hand, repeat from step 1    
+    """
+    """
+    Game Handling Process
+        User input: input("Enter 'n' to deal a new hand, 'r' to replay the last hand, or 'e' to end game: ").lower().
+        Hand: deal_hand(HAND_SIZE)
+        Last hand: hand
+        If user_input == 'n': hand = deal_hand(HAND_SIZE)
+        If user_input == 'r': last_hand = hand
+        If user_input == 'e': exiting the game
+        If user_input == 'e': break
+        If user_input == 'n', 'r', or 'e', continue.
     """
     last_hand = None  
     while True:
