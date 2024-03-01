@@ -240,7 +240,6 @@ def play_game(word_list):
     last_hand = None  
     while True:
         user_input = input("Enter 'n' to deal a new hand, 'r' to replay the last hand, or 'e' to end game: ").lower()
-        
         if user_input == 'n':
             hand = deal_hand(HAND_SIZE)
             play_hand(hand)
