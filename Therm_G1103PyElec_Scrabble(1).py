@@ -54,6 +54,28 @@ def get_frequency_dict(sequence):
 # -----------------------------------
 
 def get_word_score(word, n):
+    """
+    Returns the score for a word. Assumes the word is a valid word.
+
+    The score for a word is the sum of the points for letters in the
+    word, multiplied by the length of the word, PLUS 50 points if all n
+    letters are used on the first turn.
+
+    Letters are scored as in Scrabble; A is worth 1, B is worth 3, C is
+    worth 3, D is worth 2, E is worth 1, and so on (see SCRABBLE_LETTER_VALUES)
+
+    word: string (lowercase letters)
+    n: integer (HAND_SIZE; i.e., hand size required for additional points)
+    returns: int >= 0
+    """
+    """
+    Word Length and Score Calculation
+        Calculate word length in word_length.
+        Calculate word score by summing SCRABBLE_LETTER_VALUES values.
+        Store score in word_score.
+        Add 50 points to word_score if length equals n.
+        Return final word_score.
+    """
     word_length = len(word)
     word_score = sum(SCRABBLE_LETTER_VALUES[letter] for letter in word) * word_length
     if word_length == n:
@@ -61,12 +83,42 @@ def get_word_score(word, n):
     return word_score
 
 def display_hand(hand):
+    """
+    Displays the letters currently in the hand.
+
+    For example:
+    >>> display_hand({'a':1, 'x':2, 'l':3, 'e':1})
+    Should print out something like:
+       a x x l l l e
+    The order of the letters is unimportant.
+
+    hand: dictionary (string -> int)
+    """
     for letter, count in hand.items():
         for _ in range(count):
             print(letter, end=" ")
     print()
 
 def deal_hand(n):
+    """
+    Returns a random hand containing n lowercase letters.
+    At least n/3 the letters in the hand should be VOWELS.
+
+    Hands are represented as dictionaries. The keys are
+    letters and the values are the number of times the
+    particular letter is repeated in that hand.
+
+    n: int >= 0
+    returns: dictionary (string -> int)
+    """
+    """
+    Vowel Generation Process
+        Calculate num_vowels by dividing n by 3 and store it in a variable.
+        Initialize an empty dictionary, hand.
+        Generate vowels by randomly selecting a vowel from the VOWELS list and adding it to the hand dictionary.
+        Generate consonants by randomly selecting a consonant from the CONSONANTS list and adding it to the hand dictionary.
+        Return the generated hand dictionary.
+    """
     num_vowels = n // 3
     hand = {}
     for _ in range(num_vowels):
@@ -78,12 +130,51 @@ def deal_hand(n):
     return hand
 
 def update_hand(hand, word):
+    """
+    Assumes that 'hand' has all the letters in word.
+    In other words, this assumes that however many times
+    a letter appears in 'word', 'hand' has at least as
+    many of that letter in it. 
+
+    Updates the hand: uses up the letters in the given word
+    and returns the new hand, without those letters in it.
+
+    Has no side effects: does not modify hand.
+
+    word: string
+    hand: dictionary (string -> int)    
+    returns: dictionary (string -> int)
+    """
+    """
+    Hand Dictionary Creation and Maintenance
+        Create a new dictionary, updated_hand.
+        Decrease each letter's count in updated_hand dictionary by 1.
+        Return the updated_hand dictionary.
+    """
     updated_hand = hand.copy()
     for letter in word:
         updated_hand[letter] -= 1
     return updated_hand
 
 def is_valid_word(word, hand, word_list):
+    """
+    Returns True if word is in the word_list and is entirely
+    composed of letters in the hand. Otherwise, returns False.
+
+    Does not mutate hand or word_list.
+
+    word: string
+    hand: dictionary (string -> int)
+    word_list: list of lowercase strings
+    """
+    """
+    Word Analysis Procedure
+        Check if word is not present in word_list.
+        Create a copy of hand dictionary and store in hand_copy.
+        Check if letter count in hand_copy is 0.
+        If not, decrement count by 1.
+        If all letters are available, return True.
+    """
     word = word.lower()
     hand_copy = hand.copy()
     for letter in word:
@@ -91,9 +182,32 @@ def is_valid_word(word, hand, word_list):
     return word in word_list
 
 def calculate_hand_len(hand):
+    """ 
+    Returns the length (number of letters) in the current hand.
+
+    hand: dictionary (string-> int)
+    returns: integer
+    """
     return sum(hand.values())
 
 def play_hand(hand):
+    """
+    Allows the user to play out a single hand.
+
+    hand: dictionary (string-> int)
+    """
+    """
+    Infinite Loop Implementation
+        Initialize variable total_score to 0.
+        Run infinite loop: print current hand, 
+        prompt user for input, 
+        break if input is a period, 
+        print message if input is invalid, 
+        calculate word score, 
+        add word score to total score, 
+        print word, score, and total score, 
+        update hand by removing letters, exit loop, print total score.
+    """
     total_score = 0
     while True:
         print("Current Hand:", end=" ")
@@ -111,6 +225,28 @@ def play_hand(hand):
     print("Total score:", total_score, "points.")
 
 def play_game(word_list):
+    """
+    Allow the user to play an arbitrary number of hands.
+
+    1) Asks the user to input 'n' or 'r' or 'e'.
+      * If the user inputs 'n', let the user play a new (random) hand.
+      * If the user inputs 'r', let the user play the last hand again.
+      * If the user inputs 'e', exit the game.
+      * If the user inputs anything else, tell them their input was invalid.
+
+    2) When done playing the hand, repeat from step 1    
+    """
+    """
+    Game Handling Process
+        User input: input("Enter 'n' to deal a new hand, 'r' to replay the last hand, or 'e' to end game: ").lower().
+        Hand: deal_hand(HAND_SIZE)
+        Last hand: hand
+        If user_input == 'n': hand = deal_hand(HAND_SIZE)
+        If user_input == 'r': last_hand = hand
+        If user_input == 'e': exiting the game
+        If user_input == 'e': break
+        If user_input == 'n', 'r', or 'e', continue.
+    """
     last_hand = None  
     while True:
         user_input = input("Enter 'n' to deal a new hand, 'r' to replay the last hand, or 'e' to end game: ").lower()

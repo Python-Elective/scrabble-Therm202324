@@ -96,7 +96,7 @@ def get_word_score(word, n):
 # assert get_word_score('apple', 5) == 60  # apple = 1 + 3 + 3 + 1 + 1 = 9 * 5 = 45 + 50 = 95
 # assert get_word_score('quartz', 6) == 134  # quartz = 10 + 1 + 1 + 4 + 1 + 1 = 18 * 6 = 108 + 50 = 158
 
-print("All assertions passed successfully!")
+# print("All assertions passed successfully!")
 
 #
 # Problem #2: Make sure you understand how this function works and what it does!
@@ -133,7 +133,7 @@ def display_hand(hand):
 # # Testing the function with assertions
 # display_hand({'a': 1, 'x': 2, 'l': 3, 'e': 1})  # This should print: a x x l l l e
 
-print("All assertions passed successfully!")
+# print("All assertions passed successfully!")
 #
 # Problem #2: Make sure you understand how this function works and what it does!
 #
