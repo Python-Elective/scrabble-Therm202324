@@ -92,7 +92,7 @@ def display_hand(hand):
 
     hand: dictionary (string -> int)
     """
-    for letter, count in hand.item():
+    for letter, count in hand.items():
         for _ in range(count):
             print(letter, end=" ")
     print()
