@@ -52,7 +52,9 @@ def get_frequency_dict(sequence):
 
 # (end of helper code)
 # -----------------------------------
-
+#
+# Problem #1: Scoring a word
+#
 def get_word_score(word, n):
     """
     Returns the score for a word. Assumes the word is a valid word.
@@ -81,7 +83,9 @@ def get_word_score(word, n):
     if word_length == n:
         word_score += 50
     return word_score
-
+#
+# Problem #2: Make sure you understand how this function works and what it does!
+#
 def display_hand(hand):
     """
     Displays the letters currently in the hand.
@@ -98,7 +102,9 @@ def display_hand(hand):
         for _ in range(count):
             print(letter, end=" ")
     print()
-
+#
+# Problem #2: Make sure you understand how this function works and what it does!
+#
 def deal_hand(n):
     """
     Returns a random hand containing n lowercase letters.
@@ -128,7 +134,9 @@ def deal_hand(n):
         consonant = random.choice(CONSONANTS)
         hand[consonant] = hand.get(consonant, 0) + 1
     return hand
-
+#
+# Problem #2: Update a hand by removing letters
+#
 def update_hand(hand, word):
     """
     Assumes that 'hand' has all the letters in word.
@@ -155,7 +163,9 @@ def update_hand(hand, word):
     for letter in word:
         updated_hand[letter] -= 1
     return updated_hand
-
+#
+# Problem #3: Test word validity
+#
 def is_valid_word(word, hand, word_list):
     """
     Returns True if word is in the word_list and is entirely
@@ -177,9 +187,18 @@ def is_valid_word(word, hand, word_list):
     """
     word = word.lower()
     hand_copy = hand.copy()
+    
+    # Check if word is not present in word_list
+    if word not in word_list:
+        return False
+    
+    # Check if word can be formed using letters in the hand
     for letter in word:
+        if hand_copy.get(letter, 0) == 0:
+            return False
         hand_copy[letter] -= 1
-    return word in word_list
+        
+    return True
 
 def calculate_hand_len(hand):
     """ 
