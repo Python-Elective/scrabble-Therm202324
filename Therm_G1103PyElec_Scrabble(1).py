@@ -363,7 +363,7 @@ def play_game(word_list):
         assert user_input in ['n', 'r', 'e'], "Invalid input. Please enter 'n', 'r', or 'e'."
 
         if user_input == 'n':
-            hand = deal_hand(HAND_SIZE)  # Assuming HAND_SIZE is defined elsewhere
+            hand = deal_hand(HAND_SIZE) 
             play_hand(hand)
             last_hand = hand
         elif user_input == 'r':
