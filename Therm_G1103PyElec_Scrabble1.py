@@ -249,12 +249,10 @@ def is_valid_word(word: str, hand: dict, word_list):
     word = word.lower()
     hand_copy = hand.copy()
     for letter in word:
-        assert letter in hand_copy and hand_copy[letter] > 0, "Word cannot be formed from the given hand"
+        if letter in hand_copy and hand_copy[letter] > 0: return False
         hand_copy[letter] -= 1
 
-    assert word in word_list, "Word is not in the word list"
-
-    return True
+    return word in word_list
 
 # # Testing the function with assertions
 # word_list = ['apple', 'banana', 'cherry']

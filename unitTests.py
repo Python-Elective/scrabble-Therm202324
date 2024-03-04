@@ -1,5 +1,5 @@
-from Therm_G1103PyElec_Scrabble import *
-# from Therm_G1103PyElec_Scrabble1 import *
+# from Therm_G1103PyElec_Scrabble import *
+from Therm_G1103PyElec_Scrabble1 import *
 #
 # Test code
 # You don't need to understand how this test code works (but feel free to look it over!)
