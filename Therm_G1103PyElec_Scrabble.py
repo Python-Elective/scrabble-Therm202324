@@ -55,7 +55,7 @@ def get_frequency_dict(sequence):
 #
 # Problem #1: Scoring a word
 #
-def get_word_score(word, n):
+def get_word_score(word: str, n):
     """
     Returns the score for a word. Assumes the word is a valid word.
 
@@ -86,7 +86,7 @@ def get_word_score(word, n):
 #
 # Problem #2: Make sure you understand how this function works and what it does!
 #
-def display_hand(hand):
+def display_hand(hand: dict):
     """
     Displays the letters currently in the hand.
 
@@ -137,7 +137,7 @@ def deal_hand(n):
 #
 # Problem #2: Update a hand by removing letters
 #
-def update_hand(hand, word):
+def update_hand(hand: dict, word: str):
     """
     Assumes that 'hand' has all the letters in word.
     In other words, this assumes that however many times
@@ -166,7 +166,7 @@ def update_hand(hand, word):
 #
 # Problem #3: Test word validity
 #
-def is_valid_word(word, hand, word_list):
+def is_valid_word(word: str, hand: dict, word_list):
     """
     Returns True if word is in the word_list and is entirely
     composed of letters in the hand. Otherwise, returns False.
@@ -200,7 +200,7 @@ def is_valid_word(word, hand, word_list):
         
     return True
 
-def calculate_hand_len(hand):
+def calculate_hand_len(hand: dict):
     """ 
     Returns the length (number of letters) in the current hand.
 
@@ -209,7 +209,7 @@ def calculate_hand_len(hand):
     """
     return sum(hand.values())
 
-def play_hand(hand):
+def play_hand(hand: dict):
     """
     Allows the user to play out a single hand.
 
