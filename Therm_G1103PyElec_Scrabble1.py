@@ -249,11 +249,11 @@ def is_valid_word(word, hand, word_list):
     word = word.lower()
     hand_copy = hand.copy()
     for letter in word:
-        assert letter in hand_copy and hand.copy[letter] > 0, "Word cannot be formed from the given hand"
-        hand.copy[letter] -= 1
+        assert letter in hand_copy and hand_copy[letter] > 0, "Word cannot be formed from the given hand"
+        hand_copy[letter] -= 1
 
     assert word in word_list, "Word is not in the word list"
-    
+
     return True
 
 # # Testing the function with assertions
