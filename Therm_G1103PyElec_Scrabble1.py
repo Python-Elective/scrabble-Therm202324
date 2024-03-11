@@ -248,11 +248,15 @@ def is_valid_word(word: str, hand: dict, word_list):
 
     word = word.lower()
     hand_copy = hand.copy()
+    if word not in word_list:
+        return False
+
     for letter in word:
-        if letter in hand_copy and hand_copy[letter] > 0: return False
+        if letter not in hand_copy or hand_copy[letter] == 0:
+            return False
         hand_copy[letter] -= 1
 
-    return word in word_list
+    return True
 
 # # Testing the function with assertions
 # word_list = ['apple', 'banana', 'cherry']
