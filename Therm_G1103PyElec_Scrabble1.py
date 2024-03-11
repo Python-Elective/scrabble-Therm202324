@@ -31,6 +31,9 @@ def load_words():
     for line in in_file:
         word_list.append(line.strip().lower())
     print("  ", len(word_list), "words loaded.")
+
+    assert isinstance(word_list, list), "Word list must be a list"
+
     return word_list
 
 
@@ -88,6 +91,9 @@ def get_word_score(word: str, n):
     word_score = sum(SCRABBLE_LETTER_VALUES[letter] for letter in word) * word_length
     if word_length == n:
         word_score += 50
+    
+    assert isinstance(word_score, int), "score must be an integer"
+    
     return word_score
 
 # # Testing the function with assertions
@@ -184,7 +190,7 @@ def deal_hand(n):
 # Problem #2: Update a hand by removing letters
 #
 
-def update_hand(hand: dict, word: str):
+def update_hand(hand: dict, word: str) -> dict:
     """
     Assumes that 'hand' has all the letters in word.
     In other words, this assumes that however many times
@@ -213,6 +219,9 @@ def update_hand(hand: dict, word: str):
     for letter in word:
         assert letter in updated_hand and updated_hand[letter] > 0, "Letter not found in hand or not enough letters in hand"
         updated_hand[letter] -= 1
+
+    assert isinstance(hand, dict), "Hand must be a dictionary"
+
     return updated_hand
 
 # # Testing the function with assertions
@@ -248,13 +257,15 @@ def is_valid_word(word: str, hand: dict, word_list):
 
     word = word.lower()
     hand_copy = hand.copy()
-    if word not in word_list:
-        return False
+
 
     for letter in word:
         if letter not in hand_copy or hand_copy[letter] == 0:
             return False
         hand_copy[letter] -= 1
+    
+    if word not in word_list:
+        return False
 
     return True
 
@@ -300,17 +311,17 @@ def play_hand(hand: str):
     """
     assert isinstance(hand, dict), "Hand must be a dictionary"
 
-    total_score = 0
+    total_score : int = 0
     
     while True:
-        assert isinstance(total_score, int), "Total score must be an integer"
+        #assert isinstance(total_score, int), "Total score must be an integer"
 
         print("Current Hand:", end=" ")
         display_hand(hand)
         
         word = input('Enter word, or a "." to indicate that you are finished: ').lower()
 
-        assert isinstance(word, str), "Word must be a string"
+        #assert isinstance(word, str), "Word must be a string"
         
         if word == ".":
             break
@@ -320,13 +331,12 @@ def play_hand(hand: str):
             continue
         
         word_score = get_word_score(word, calculate_hand_len(hand))
-        assert isinstance(word_score, int), "Word score must be an integer"
+        #assert isinstance(word_score, int), "Word score must be an integer"
         total_score += word_score
         
         print(f'"{word}" earned {word_score} points. Total: {total_score} points\n')
         
         hand = update_hand(hand, word)
-        assert isinstance(hand, dict), "Hand must be a dictionary"
         
     print("Total score:", total_score, "points.")
 
@@ -357,12 +367,13 @@ def play_game(word_list):
         If user_input == 'e': break
         If user_input == 'n', 'r', or 'e', continue.
     """
-    assert isinstance(word_list, list), "Word list must be a list"
-
+   
     last_hand = None  
     while True:
         user_input = input("Enter 'n' to deal a new hand, 'r' to replay the last hand, or 'e' to end game: ").lower()
-        assert user_input in ['n', 'r', 'e'], "Invalid input. Please enter 'n', 'r', or 'e'."
+        if user_input not in ['n', 'r', 'e'] :
+            print("Invalid input. Please enter 'n', 'r', or 'e'.")
+            continue
 
         if user_input == 'n':
             hand = deal_hand(HAND_SIZE) 
